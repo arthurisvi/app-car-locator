@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use Exception;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
@@ -14,7 +15,9 @@ class BrandController extends Controller
      */
     public function index()
     {
-        //
+        $brands = Brand::all();
+
+        return $brands;
     }
 
     /**
@@ -25,7 +28,14 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        try{
+            $brand = Brand::create($request->all());
+        }catch(Exception $e){
+            dd($e);
+        }
+
+        return response()->json($brand, 201);
     }
 
     /**
@@ -34,9 +44,9 @@ class BrandController extends Controller
      * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function show(Brand $brand)
+    public function show(Brand $brand, Request $request)
     {
-        //
+        return $brand;
     }
 
     /**
@@ -48,7 +58,9 @@ class BrandController extends Controller
      */
     public function update(Request $request, Brand $brand)
     {
-        //
+        $brand->update($request->all());
+
+        return $brand;
     }
 
     /**
@@ -59,6 +71,7 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        //
+        $brand->delete();
+        return ['message' => 'Marca deletada com sucesso!'];
     }
 }
